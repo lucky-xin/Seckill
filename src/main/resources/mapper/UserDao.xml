@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xin.seckill.dao.UserDao">
+
+    <!--开启本mapper的namespace的二级缓存 -->
+    <cache />
+    <sql id="query_user_where">
+        <if test="userCustom!=null">
+            <if test="userCustom.sex!=null">
+                and sex=#{userCustom.sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler}
+            </if>
+        </if>
+
+        <if test="userCustom.name!=null and userCustom.name!=''">
+            and name like '%${userCustom.name}%'
+        </if>
+    </sql>
+    <!-- collection：集合属性 item：每个遍历生成对象 open:开始遍历拼接串 close:结束遍历拼接串 separator:遍历两个对象中间要拼接的串 -->
+    <sql id="foreach">
+        <if test="ids!=null and ids.size>0">
+            <foreach collection="ids" item="id" open="AND id in(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </sql>
+
+    <resultMap type="com.xin.seckill.pojo.User" id="userResultMap">
+        <id column="id_" property="id"/>
+        <result column="username_" property="name"/>
+        <result column="birthday_" property="birth"/>
+        <result column="sex" property="sex" typeHandler="com.xin.seckill.mybatis.handlers.SexEnumTypeHandler"/>
+    </resultMap>
+
+    <select id="findUserByMap" parameterType="int" resultMap="userResultMap">
+        select id,name,password,email,birth,address,sex from user_info
+        <where>
+            <include refid="foreach"></include>
+            <include refid="query_user_where"></include>
+        </where>
+	</select>
+
+</mapper>

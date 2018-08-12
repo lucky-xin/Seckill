@@ -1,0 +1,26 @@
+server:
+  port: 9080
+  address: 127.0.0.1
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.50.130:3306/learn_db?serverTimezone=GMT&generateSimpleParameterMetadata=true&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: MySql2018*
+  thymeleaf:
+    prefix: classpath:/templates/
+  mvc.static-path-pattern: /static/**
+
+mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.xin.seckill.pojo
+    type-handlers-package: om.xin.seckill.mybatis.handlers
+    config-location: classpath:config/mybatis-config.xml
+#    configuration:
+##      lazy-loading-enabled: true
+##      aggressive-lazy-loading: true
+
+logging:
+  level:
+    com.xin.seckill.dao: debug

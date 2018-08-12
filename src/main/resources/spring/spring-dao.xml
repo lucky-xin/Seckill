@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--配置整合mybatis过程
+    1.配置数据库相关参数-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--４:配置扫描Dao接口包,动态实现DAO接口,注入到spring容器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入SqlSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描的Dao接口-->
+        <property name="basePackage" value="cn.codingxiaxw.dao"/>
+    </bean>
+
+    <!--redisDao-->
+    <bean id="redisDao" class="com.xin.seckill.dao.RedisDao">
+        <constructor-arg index="0" value="192.168.50.130"/>
+        <constructor-arg index="1" value="6379"/>
+        <constructor-arg index="2" value="foobared"/>
+    </bean>
+</beans>
