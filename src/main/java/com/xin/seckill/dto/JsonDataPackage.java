@@ -7,7 +7,7 @@ package com.xin.seckill.dto;
  * @date 2018-08-10 16:29
  * @Copyright (C)2018 , Luchaoxin
  */
-public class SeckillDataPackage<T> {
+public class JsonDataPackage<T> {
 
     //请求是否成功
     private boolean success;
@@ -16,12 +16,12 @@ public class SeckillDataPackage<T> {
 
     private String error;
 
-    public SeckillDataPackage(boolean success, T data) {
+    public JsonDataPackage(boolean success, T data) {
         this.success = success;
         this.data = data;
     }
 
-    public SeckillDataPackage(boolean success, String error) {
+    public JsonDataPackage(boolean success, String error) {
         this.success = success;
         this.error = error;
     }

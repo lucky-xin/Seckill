@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.xin.seckill.dao.RedisDao;
 import com.xin.seckill.dao.SeckillDao;
 import com.xin.seckill.dao.SuccessKilledDao;
-import com.xin.seckill.dto.SeckillExecutionResultInfo;
+import com.xin.seckill.dto.ExecutionResultInfo;
 import com.xin.seckill.dto.SeckillExposer;
 import com.xin.seckill.enums.SeckillStatEnum;
 import com.xin.seckill.exception.SeckillException;
@@ -100,11 +100,11 @@ public class SeckillServiceImpl implements SeckillService {
      * 2.保证事务方法的执行时间尽可能短，不要穿插其他网络操作RPC/HTTP请求或者剥离到事务方法外部
      * 3.不是所有的方法都需要事务，如只有一条修改操作、只读操作不要事务控制
      */
-    public SeckillExecutionResultInfo executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException {
+    public ExecutionResultInfo executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException {
 
         if (md5 == null || !md5.equals(getMD5(seckillId))) {
             //秒杀数据被重写了
-            return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.DATE_REWRITE);
+            return new ExecutionResultInfo(seckillId, SeckillStatEnum.DATE_REWRITE);
         }
 
         //执行秒杀逻辑:减库存+增加购买明细
@@ -114,18 +114,18 @@ public class SeckillServiceImpl implements SeckillService {
             int insertCount = successKilledDao.insertSuccessKilled(seckillId, userPhone);
             //看是否该明细被重复插入，即用户是否重复秒杀
             if (insertCount <= 0) {
-                return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.REPEAT_KILL);
+                return new ExecutionResultInfo(seckillId, SeckillStatEnum.REPEAT_KILL);
             } else {
                 //减库存,热点商品竞争
                 int updateCount = seckillDao.reduceNumber(seckillId, nowTime);
                 if (updateCount <= 0) {
                     //没有更新库存记录，说明秒杀结束 rollback
-                    return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.END);
+                    return new ExecutionResultInfo(seckillId, SeckillStatEnum.END);
                 } else {
                     tryRefreshRedis(seckillId);
                     //秒杀成功,得到成功插入的明细记录,并返回成功秒杀的信息 commit
                     SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId, userPhone);
-                    return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.SUCCESS, successKilled);
+                    return new ExecutionResultInfo(seckillId, SeckillStatEnum.SUCCESS, successKilled);
                 }
             }
         } catch (Exception e) {
@@ -160,10 +160,10 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     @Override
-    public SeckillExecutionResultInfo executeSeckillProcedure(long seckillId, long userPhone, String md5) throws SeckillException {
+    public ExecutionResultInfo executeSeckillProcedure(long seckillId, long userPhone, String md5) throws SeckillException {
         if (md5 == null || !md5.equals(getMD5(seckillId))) {
             //秒杀数据被重写了
-            return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.DATE_REWRITE);
+            return new ExecutionResultInfo(seckillId, SeckillStatEnum.DATE_REWRITE);
         }
         Map<String, Object> params = Maps.newHashMap();
         params.put("seckillId", seckillId);
@@ -178,12 +178,12 @@ public class SeckillServiceImpl implements SeckillService {
                 //秒杀成功,得到成功插入的明细记录,并返回成功秒杀的信息 commit
                 SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId, userPhone);
                 tryRefreshRedis(seckillId);
-                return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.SUCCESS, successKilled);
+                return new ExecutionResultInfo(seckillId, SeckillStatEnum.SUCCESS, successKilled);
             } else {
-                return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.stateOf(result));
+                return new ExecutionResultInfo(seckillId, SeckillStatEnum.stateOf(result));
             }
         } catch (Exception e) {
-            return new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.INNER_ERROR);
+            return new ExecutionResultInfo(seckillId, SeckillStatEnum.INNER_ERROR);
         }
     }
 

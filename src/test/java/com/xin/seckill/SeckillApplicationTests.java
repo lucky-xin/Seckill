@@ -1,7 +1,7 @@
 package com.xin.seckill;
 
 import com.xin.seckill.dao.SeckillDao;
-import com.xin.seckill.dto.SeckillExecutionResultInfo;
+import com.xin.seckill.dto.ExecutionResultInfo;
 import com.xin.seckill.dto.SeckillExposer;
 import com.xin.seckill.pojo.Seckill;
 import com.xin.seckill.service.SeckillService;
@@ -73,7 +73,7 @@ public class SeckillApplicationTests {
             long userPhone = 13476191876L;
             String md5 = exposer.getMd5();
             try {
-                SeckillExecutionResultInfo seckillExecution = seckillService.executeSeckill(seckillId, userPhone, md5);
+                ExecutionResultInfo seckillExecution = seckillService.executeSeckill(seckillId, userPhone, md5);
                 System.out.println(seckillExecution);
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -95,7 +95,7 @@ public class SeckillApplicationTests {
             long userPhone = 13475591889L;
             String md5 = exposer.getMd5();
             try {
-                SeckillExecutionResultInfo seckillExecution = seckillService.executeSeckillProcedure(seckillId, userPhone, md5);
+                ExecutionResultInfo seckillExecution = seckillService.executeSeckillProcedure(seckillId, userPhone, md5);
                 System.out.println(seckillExecution);
             } catch (Exception e1) {
                 e1.printStackTrace();

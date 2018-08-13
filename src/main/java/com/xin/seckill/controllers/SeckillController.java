@@ -1,7 +1,7 @@
 package com.xin.seckill.controllers;
 
-import com.xin.seckill.dto.SeckillDataPackage;
-import com.xin.seckill.dto.SeckillExecutionResultInfo;
+import com.xin.seckill.dto.JsonDataPackage;
+import com.xin.seckill.dto.ExecutionResultInfo;
 import com.xin.seckill.dto.SeckillExposer;
 import com.xin.seckill.enums.SeckillStatEnum;
 import com.xin.seckill.pojo.Seckill;
@@ -65,14 +65,14 @@ public class SeckillController {
     //ajax ,json暴露秒杀接口的方法
     @ResponseBody
     @RequestMapping(value = "/{seckillId}/exposer", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public SeckillDataPackage<SeckillExposer> exposer(@PathVariable("seckillId") Long seckillId) {
-        SeckillDataPackage<SeckillExposer> result;
+    public JsonDataPackage<SeckillExposer> exposer(@PathVariable("seckillId") Long seckillId) {
+        JsonDataPackage<SeckillExposer> result;
         try {
             SeckillExposer exposer = seckillService.exportSeckillUrl(seckillId);
-            result = new SeckillDataPackage<SeckillExposer>(true, exposer);
+            result = new JsonDataPackage<SeckillExposer>(true, exposer);
         } catch (Exception e) {
             e.printStackTrace();
-            result = new SeckillDataPackage<SeckillExposer>(false, e.getMessage());
+            result = new JsonDataPackage<SeckillExposer>(false, e.getMessage());
         }
 
         return result;
@@ -80,20 +80,20 @@ public class SeckillController {
 
     @ResponseBody
     @RequestMapping(value = "/{seckillId}/{md5}/execution", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public SeckillDataPackage<SeckillExecutionResultInfo> execute(@PathVariable("seckillId") Long seckillId,
-                                                                  @PathVariable("md5") String md5,
-                                                                  @CookieValue(value = "userPhone", required = false) Long userPhone) {
+    public JsonDataPackage<ExecutionResultInfo> execute(@PathVariable("seckillId") Long seckillId,
+                                                        @PathVariable("md5") String md5,
+                                                        @CookieValue(value = "userPhone", required = false) Long userPhone) {
         if (userPhone == null) {
-            return new SeckillDataPackage<SeckillExecutionResultInfo>(false, "未注册");
+            return new JsonDataPackage<ExecutionResultInfo>(false, "未注册");
         }
-        SeckillDataPackage<SeckillExecutionResultInfo> result;
+        JsonDataPackage<ExecutionResultInfo> result;
 
         try {
-            SeckillExecutionResultInfo execution = seckillService.executeSeckill(seckillId, userPhone, md5);
-            return new SeckillDataPackage<SeckillExecutionResultInfo>(true, execution);
+            ExecutionResultInfo execution = seckillService.executeSeckill(seckillId, userPhone, md5);
+            return new JsonDataPackage<ExecutionResultInfo>(true, execution);
         } catch (Exception e) {
-            SeckillExecutionResultInfo execution = new SeckillExecutionResultInfo(seckillId, SeckillStatEnum.INNER_ERROR);
-            return new SeckillDataPackage<SeckillExecutionResultInfo>(true, execution);
+            ExecutionResultInfo execution = new ExecutionResultInfo(seckillId, SeckillStatEnum.INNER_ERROR);
+            return new JsonDataPackage<ExecutionResultInfo>(true, execution);
         }
 
     }
@@ -101,9 +101,9 @@ public class SeckillController {
     //获取系统时间
     @RequestMapping(value = "/time/now", method = RequestMethod.GET)
     @ResponseBody
-    public SeckillDataPackage<Long> time(@RequestParam("date") Date date) {
+    public JsonDataPackage<Long> time(@RequestParam("date") Date date) {
         Date now = new Date();
-        return new SeckillDataPackage<Long>(true, now.getTime());
+        return new JsonDataPackage<Long>(true, now.getTime());
     }
 
 //    @InitBinder

@@ -10,7 +10,7 @@ import com.xin.seckill.pojo.SuccessKilled;
  * @date 2018-08-10 16:28
  * @Copyright (C)2018 , Luchaoxin
  */
-public class SeckillExecutionResultInfo {
+public class ExecutionResultInfo {
 
     private long seckillId;
 
@@ -24,7 +24,7 @@ public class SeckillExecutionResultInfo {
     private SuccessKilled successKilled;
 
     //秒杀成功返回所有信息
-    public SeckillExecutionResultInfo(long seckillId, SeckillStatEnum statEnum, SuccessKilled successKilled) {
+    public ExecutionResultInfo(long seckillId, SeckillStatEnum statEnum, SuccessKilled successKilled) {
         this.seckillId = seckillId;
         this.state = statEnum.getState();
         this.stateInfo = statEnum.getInfo();
@@ -32,7 +32,7 @@ public class SeckillExecutionResultInfo {
     }
 
     //秒杀失败
-    public SeckillExecutionResultInfo(long seckillId, SeckillStatEnum statEnum) {
+    public ExecutionResultInfo(long seckillId, SeckillStatEnum statEnum) {
         this.seckillId = seckillId;
         this.state = statEnum.getState();
         this.stateInfo = statEnum.getInfo();

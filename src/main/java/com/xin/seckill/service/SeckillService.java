@@ -1,7 +1,7 @@
 package com.xin.seckill.service;
 
 import com.xin.seckill.dto.SeckillExposer;
-import com.xin.seckill.dto.SeckillExecutionResultInfo;
+import com.xin.seckill.dto.ExecutionResultInfo;
 import com.xin.seckill.exception.SeckillException;
 import com.xin.seckill.pojo.Seckill;
 
@@ -42,10 +42,10 @@ public interface SeckillService {
      * @param md5
      * @return
      */
-    SeckillExecutionResultInfo executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException;
+    ExecutionResultInfo executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException;
 
 
-    public SeckillExecutionResultInfo executeSeckillProcedure(long seckillId, long userPhone, String md5) throws SeckillException;
+    public ExecutionResultInfo executeSeckillProcedure(long seckillId, long userPhone, String md5) throws SeckillException;
 
 
 }
