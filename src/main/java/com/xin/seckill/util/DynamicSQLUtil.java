@@ -1,9 +1,11 @@
 package com.xin.seckill.util;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.collect.Lists;
 import com.xin.utils.StringUtil;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * @author Luchaoxin
@@ -19,29 +21,56 @@ public class DynamicSQLUtil {
      * 注意：使用驼峰式命名时，字段名必须符合以下规则
      * 如：字段名称为 userName 则数据库字段为 user_name
      *
-     * @param fields 成员名称数组
-     * @param clazz  po类
+     * @param fieldNames 成员名称数组
      * @return sql语句
-     * @throws NoSuchFieldException
      */
-    public static String getAndStmt(String fields[], Class<?> clazz) throws NoSuchFieldException {
+    public static String getAndStmt(String fieldNames[]) {
+        String column = null;
+        String value = null;
+
         StringBuilder sql = new StringBuilder();
-        for (String fieldName : fields) {
-            Field field = clazz.getDeclaredField(fieldName);
-            String tmp = "<if test=\"_field != null\"> AND _column=#{_field}</if>";
-            sql.append(tmp.replaceAll("_field", field.getName()).replaceAll("_column",
-                    CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName())));
+
+        for (int i = 0; i < fieldNames.length; i++) {
+
+            column = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, fieldNames[i]);
+            value = "#{" + fieldNames[i] + "}";
+            sql.append(" and ").append(column).append("=").append(value);
+            if (fieldNames.length - 1 != i) {
+                sql.append(",");
+            }
         }
-        return sql.toString();
+        return null;
     }
 
-    public static String getAndStmt(Class<?> clazz) throws NoSuchFieldException {
-        Field[] declaredFields = clazz.getDeclaredFields();
-        String[] fields = new String[declaredFields.length];
-        for (int i = 0; i < declaredFields.length; i++) {
-            fields[i] = declaredFields[i].getName();
+    /**
+     * 根据已经初始化的对象来创建sql更新语句，如果对象成员不为null更新
+     *
+     * @param instance 对象实例
+     * @return 返回如下 name=#{namd},sex=#{sex}
+     * @throws Exception
+     */
+    public static String getUpdateStmt(Object instance) throws Exception {
+        return getUpdateStmt(getNotNullFields(instance));
+    }
+
+    public static String getUpdateStmt(String fieldNames[]) {
+
+        String column = null;
+        String value = null;
+
+        StringBuilder sql = new StringBuilder();
+
+        for (int i = 0; i < fieldNames.length; i++) {
+
+            column = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, fieldNames[i]);
+            value = "#{" + fieldNames[i] + "}";
+
+            sql.append(column).append("=").append(value);
+            if (fieldNames.length - 1 != i) {
+                sql.append(",");
+            }
         }
-        return getAndStmt(fields, clazz);
+        return sql.toString();
     }
 
     public static String getInStmt(String column, Object[] values) {
@@ -76,5 +105,26 @@ public class DynamicSQLUtil {
         return new StringBuilder(" or ").append(column).append(" = ").append(value).toString();
     }
 
+
+    public static String[] getNotNullFields(Object instance) throws Exception {
+        Class<?> clazz = instance.getClass();
+        List<String> fields = Lists.newArrayList();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            if (null != getFieldValue(instance, field.getName())) {
+                fields.add(field.getName());
+            }
+        }
+        return fields.toArray(new String[]{});
+    }
+
+
+    public static Object getFieldValue(Object instance, String fieldName) throws Exception {
+        Class<?> clazz = instance.getClass();
+        String firstChar = String.valueOf(fieldName.charAt(0));
+
+        String getMethodName = "get" + fieldName.replaceFirst(firstChar, firstChar.toUpperCase());
+        return clazz.getMethod(getMethodName).invoke(instance);
+    }
 
 }

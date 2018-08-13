@@ -23,6 +23,23 @@ import java.util.Map;
 @Mapper
 public interface UserDao {
 
+    @Insert("insert into user_info(id,name,password,email,birth,address,sex)values"
+            + "(#{id},#{name},#{password},#{email},#{birth,jdbcType=TIMESTAMP},#{address},"
+            + "#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler})")
+    int insertUser(User user) throws Exception;
+
+    //    @Insert(
+//            "<script>"
+//            + " insert into user_info(id,name,password,email,birth,address,sex) values "
+//            + " <foreach collection=\"users\" item=\"item\" index=\"index\"  separator=\",\">"
+//            + "  (#{item.id,jdbcType=INTEGER}, #{item.name}, #{item.password},#{item.email},"
+//            + "   #{item.birth},#{item.address},#{item.sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler})"
+//            + " </foreach>"
+//            + " </script>")
+    int batchInsertUser(@Param("users") List<User> users) throws Exception;
+
+    int batchDeleteUser(List<Integer> ids) throws Exception;
+
 
     @SelectProvider(type = UserDaoProvider.class, method = "findUserList")
     @Results(id = "sexTypeHandler", value = @Result(property = "sex", column = "sex", typeHandler = SexEnumTypeHandler.class))
@@ -70,16 +87,11 @@ public interface UserDao {
     @ResultMap("sexTypeHandler")
     List<User> findUserByName(@Param("name") String name) throws Exception;
 
-    @Insert("insert into user_info(id,name,password,email,birth,address,sex)values" +
-            "(#{id},#{name},#{password},#{email},#{birth,jdbcType=TIMESTAMP},#{address}," +
-            "#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler})")
-    int insertUser(User user) throws Exception;
-
-    @Delete("delete from user_info where id=#{id};")
+    @Delete("delete from user_info where id=#{id}")
     int deleteUser(@Param("id") int id) throws Exception;
 
-    @Update("update user_info set sex=#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler},name=#{name}," +
-            "birth=#{birth,jdbcType=TIMESTAMP},address=#{address},password=#{password} ,email=#{email} where id=#{id}")
+    @Update("update user_info set sex=#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler},name=#{name},"
+            + "birth=#{birth,jdbcType=TIMESTAMP},address=#{address},password=#{password} ,email=#{email} where id=#{id}")
     int updateUser(User user) throws Exception;
 
     @Select("select id,name,password,email,birth,address,sex from user_info where id=#{id} and name like '%${username}%'")
@@ -95,4 +107,5 @@ public interface UserDao {
     @Select("select id,name,password,email,birth,address,sex from user_info")
     @ResultMap("sexTypeHandler")
     List<User> pagingQueryUserList(RowBounds rowBounds);
+
 }

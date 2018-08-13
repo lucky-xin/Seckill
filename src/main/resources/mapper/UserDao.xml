@@ -6,7 +6,7 @@
 <mapper namespace="com.xin.seckill.dao.UserDao">
 
     <!--开启本mapper的namespace的二级缓存 -->
-    <cache />
+    <cache/>
     <sql id="query_user_where">
         <if test="userCustom!=null">
             <if test="userCustom.sex!=null">
@@ -40,6 +40,21 @@
             <include refid="foreach"></include>
             <include refid="query_user_where"></include>
         </where>
-	</select>
+    </select>
+<!--
+    <insert id="batchInsertUser" parameterType="java.util.List">
+        insert into user_info(id,name,password,email,birth,address,sex) values
+        <foreach collection="users" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.password},#{item.email},#{item.birth},#{item.address},
+            #{item.sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler})
+        </foreach>
+    </insert>
+-->
+    <delete id="batchDeleteUser" parameterType="java.util.List">
+        delete from user_info where 1=1
+        <foreach collection="list" item="id" open="AND id in(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

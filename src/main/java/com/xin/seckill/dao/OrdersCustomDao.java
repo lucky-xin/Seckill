@@ -29,12 +29,12 @@ public interface OrdersCustomDao {
 
     @Select("SELECT orders.*,user_info.name,user_info.address,user_info.email,user_info.sex from orders,user_info where orders.user_id=user_info.id;")
     @Results({
-            @Result(column="id",property="id"),
-            @Result( column="user_id", property="userId"),
-            @Result(column="num", property="num"),
-            @Result(column="note", property="note"),
-            @Result(column="create_time", property="createTime"),
-            @Result(column="address", property="address"),
+            @Result(column = "id", property = "id"),
+            @Result(column = "user_id", property = "userId"),
+            @Result(column = "num", property = "num"),
+            @Result(column = "note", property = "note"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "address", property = "address"),
             @Result(column = "user_id", property = "user", many = @Many(select = "com.xin.seckill.dao.UserDao.findUserById"))
     })
     List<Orders> findOrdersUserResultMap() throws Exception;
@@ -46,9 +46,9 @@ public interface OrdersCustomDao {
      * @return
      * @throws Exception
      */
-    @Select("SELECT orders.*,user_info.name,user_info.address,user_info.email,user_info.sex,orderdetail.items_id," +
-            " orderdetail.orders_id,orderdetail.id as orderdetail_id,orderdetail.item_num " +
-            " from orders,user_info,orderdetail where orders.user_id=user_info.id and orders.id=orderdetail.orders_id")
+    @Select("SELECT orders.*,user_info.name,user_info.address,user_info.email,user_info.sex,orderdetail.items_id,"
+            + " orderdetail.orders_id,orderdetail.id as orderdetail_id,orderdetail.item_num "
+            + " from orders,user_info,orderdetail where orders.user_id=user_info.id and orders.id=orderdetail.orders_id")
     @ResultMap("com.xin.seckill.dao.OrdersCustomDao.OrdersAndOrderdetailResultMap")
     List<Orders> findOrdersAndOrderDetailResultMap() throws Exception;
 

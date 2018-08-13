@@ -15,6 +15,7 @@ import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +63,33 @@ public class UserMapperTests {
     }
 
     @Test
+    public void batchInsertUserTest() throws Exception {
+        int count = 10;
+        List<User> users = Lists.newArrayList();
+        for (int i = 0; i < count; i++) {
+            String randomString = StringUtil.getRandomString(10);
+            User user = new User(randomString + "@qq.com", "name" + i + randomString, Sex.MALE, new Date(), "长沙", randomString);
+            user.setId(33333 + i);
+            users.add(user);
+        }
+        int result = userDao.batchInsertUser(users);
+        System.out.println(result);
+
+    }
+
+    @Test
+    public void batchDeleteUserTest() throws Exception {
+        int count = 10;
+        List<Integer> ids = Lists.newArrayList();
+        for (int i = 0; i < count; i++) {
+            ids.add(33333 + i);
+        }
+        userDao.batchDeleteUser(ids);
+
+    }
+
+    @Test
     public void testFindUserById() throws Exception {
-//        userDao = sqlSession.getMapper(UserMapper.class);
-        System.out.println(userDao);
         User user = userDao.findUserById(1);
         //User [id=42, name=Ivan, password=123, email=1314@qq.com, sex=男, birth=Thu Jan 01 00:00:00 CST 1970, address=长沙]
         System.out.println(user);
@@ -144,16 +169,14 @@ public class UserMapperTests {
         //传递HashMap对象查询用户列表
         List<User> list = userDao.findUserByHashMap(map);
         System.out.println(list);
-        //关闭session
-//        sqlSession.close();
     }
 
     @Test
     public void testFindUserCount() throws Exception {
         UserQueryVo userQueryVo = new UserQueryVo();
         User custom = new User();
-        custom.setSex(Sex.FEMALE);
-        custom.setName("Ivan");
+        custom.setSex(Sex.MALE);
+        custom.setName("name");
         userQueryVo.setUserCustom(custom);
         int count = userDao.findUserCount(userQueryVo);
         System.out.println(count);

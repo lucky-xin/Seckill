@@ -1,7 +1,6 @@
 package com.xin.seckill;
 
 import com.github.pagehelper.PageHelper;
-import com.google.common.base.CaseFormat;
 import com.xin.seckill.dao.ItemsDao;
 import com.xin.seckill.pojo.Items;
 import com.xin.utils.StringUtil;
@@ -11,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import scala.annotation.meta.field;
 
 import java.util.Date;
 
@@ -62,8 +60,8 @@ public class ItemsMapperTests {
     @Test
     public void updateByItemsTest() {
         String name = StringUtil.getRandomString(5);
-        Items items = new Items("更新名称", 12, 2, "挖矿机01", "https://1111", new Date());
-        itemsDao.updateByPrimaryKey(items);
+        Items items = new Items("更新名称", 9, 2, "挖矿机01", "https://1111", new Date());
+        itemsDao.updateByItems(items);
     }
 
 

@@ -15,23 +15,23 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface ItemsDao {
 
-    @Insert("insert into items (id, name, price,pic, createtime, detail) values " +
-            "(#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=REAL},#{pic,jdbcType=VARCHAR}," +
-            "#{createtime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR})")
+    @Insert({"insert into items (id, name, price,pic, createtime, detail) values (#{id,jdbcType=INTEGER}, "
+            + "#{name},#{price,jdbcType=REAL},#{pic},#{createtime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR})"})
     int insert(Items record);
 
     @Delete("delete from items where id = #{id,jdbcType=INTEGER}")
     int deleteByPrimaryKey(Integer id);
 
-    @Update("update items set name = #{name},price = #{price},pic = #{pic},createtime = #{createtime} where id = #{id}")
+    @Update("update items set name =#{name},price=#{price},pic=#{pic},createtime=#{createtime} where id = #{id}")
     int updateByPrimaryKey(Items record);
 
     @UpdateProvider(type = ItemsDaoProvider.class, method = "updateByItems")
-    int updateByItems(@Param("record") Items record);
+    int updateByItems(Items record);
 
     class ItemsDaoProvider {
-        public String updateByItems(Items record) throws NoSuchFieldException {
-            return "<script>" + DynamicSQLUtil.getAndStmt(Items.class) + "</script>";
+        public String updateByItems(Items record) throws Exception {
+            String sql = " update items set " + DynamicSQLUtil.getUpdateStmt(record) + " where id = #{id}";
+            return sql;
         }
     }
 }

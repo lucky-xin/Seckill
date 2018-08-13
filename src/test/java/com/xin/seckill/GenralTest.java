@@ -2,10 +2,12 @@ package com.xin.seckill;
 
 import com.google.common.base.CaseFormat;
 import com.xin.seckill.pojo.Items;
-import com.xin.seckill.util.DynamicSQLUtil;
+import com.xin.seckill.pojo.User;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * @author Luchaoxin
@@ -17,7 +19,7 @@ import java.lang.reflect.Field;
 public class GenralTest {
     @Test
     public void test1() throws NoSuchFieldException {
-        System.out.println(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, "createtime"));
+        System.out.println(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, "createTime"));
 
         StringBuilder sql = new StringBuilder();
         String[] fields = new String[]{"id", "name", "price", "pic", "createtime", "detail"};
@@ -29,6 +31,37 @@ public class GenralTest {
         }
 //        System.out.println(sql.toString());
 
-        System.out.println(DynamicSQLUtil.getAndStmt(Items.class));
+//        System.out.println(DynamicSQLUtil.getUpdateStmt(Items.class, "id"));
+        User user = new User();
+        user.setName("jhjkh");
+
+        String fieldName = "name";
+        String firstChar = String.valueOf(fieldName.charAt(0));
+        String getMethodName = "get" + fieldName.replaceFirst(firstChar, firstChar.toUpperCase());
+        Class<?> clazz = user.getClass();
+
+        try {
+            Method getMethod = clazz.getMethod(getMethodName);
+            Object value = getMethod.invoke(user);
+            System.out.println(value);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public static Object getGetMethod(Object ob, String name) throws Exception {
+        Method[] m = ob.getClass().getMethods();
+        for (int i = 0; i < m.length; i++) {
+            if (("get" + name).toLowerCase().equals(m[i].getName().toLowerCase())) {
+                return m[i].invoke(ob);
+            }
+        }
+        return null;
     }
 }

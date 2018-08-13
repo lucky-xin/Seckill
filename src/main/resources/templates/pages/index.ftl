@@ -5,6 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-<h1 th:text="${key}">Hello World</h1>
+<h1>Hello World ${username}</h1>
 </body>
 </html>

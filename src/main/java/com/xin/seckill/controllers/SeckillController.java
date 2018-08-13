@@ -79,7 +79,7 @@ public class SeckillController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{seckillId}/{md5}/execution", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/{seckillId}/{md5}/execution", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public SeckillDataPackage<SeckillExecutionResultInfo> execute(@PathVariable("seckillId") Long seckillId,
                                                                   @PathVariable("md5") String md5,
                                                                   @CookieValue(value = "userPhone", required = false) Long userPhone) {

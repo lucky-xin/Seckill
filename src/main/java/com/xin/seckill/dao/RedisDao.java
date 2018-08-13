@@ -93,23 +93,23 @@ public class RedisDao {
         RedisDistributedLock redisDistributedLock = new RedisDistributedLock(jedis);
         try {
             // 循环直到获取到数据
-            while (true) {
+            long acquireTimeout = 1000 * 5;
+            long endTime = acquireTimeout + System.currentTimeMillis();
+            do {
                 Seckill seckill = getSeckill(seckillId, jedis);
                 if (seckill != null) {
                     return seckill;
                 }
-                // 尝试获取锁。
                 // 锁过期时间是防止程序突然崩溃来不及解锁，而造成其他线程不能获取锁的问题。过期时间是业务容忍最长时间。
-                lockValue = redisDistributedLock.lock(lockKey, 10, 2, TimeUnit.SECONDS);
+                lockValue = redisDistributedLock.lock(lockKey, acquireTimeout, acquireTimeout, TimeUnit.MILLISECONDS);
 
-                boolean getLock = !StringUtil.isEmpty(lockValue);
-                if (getLock) {
+                if (!StringUtil.isEmpty(lockValue)) {
                     // 获取到锁，从数据库拿数据, 然后存redis
                     seckill = getDataFromDb.apply(seckillId);
                     putSeckill(seckill, jedis);
                     return seckill;
                 }
-            }
+            } while (System.currentTimeMillis() < endTime);
         } catch (Exception e) {
             redisLog.error("获取Seckill异常", e);
         } finally {

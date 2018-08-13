@@ -26,11 +26,6 @@ public class BaseInterceptor implements HandlerInterceptor {
         logger.info("UserAgent:" + request.getHeader("User-Agent"));
         logger.info("用户方位地址："+uri);
         String user = request.getRemoteUser();
-        //用户校验
-        if (null == user) {
-
-        }
-
         if (uri.startsWith("/js")) {
             return true;
         }
