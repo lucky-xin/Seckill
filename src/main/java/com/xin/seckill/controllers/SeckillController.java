@@ -69,12 +69,14 @@ public class SeckillController {
         JsonDataPackage<SeckillExposer> result;
         try {
             SeckillExposer exposer = seckillService.exportSeckillUrl(seckillId);
-            result = new JsonDataPackage<SeckillExposer>(true, exposer);
+            if (null == exposer) {
+                result = new JsonDataPackage<SeckillExposer>(false, "哎呀系统开了小差，获取秒杀商品信息失败了！");
+            } else {
+                result = new JsonDataPackage<SeckillExposer>(true, exposer);
+            }
         } catch (Exception e) {
-            e.printStackTrace();
             result = new JsonDataPackage<SeckillExposer>(false, e.getMessage());
         }
-
         return result;
     }
 

@@ -106,6 +106,9 @@ public class RedisDao {
                 if (!StringUtil.isEmpty(lockValue)) {
                     // 获取到锁，从数据库拿数据, 然后存redis
                     seckill = getDataFromDb.apply(seckillId);
+                    if (null == seckill) {
+                        return null;
+                    }
                     putSeckill(seckill, jedis);
                     return seckill;
                 }
@@ -113,7 +116,6 @@ public class RedisDao {
         } catch (Exception e) {
             redisLog.error("获取Seckill异常", e);
         } finally {
-            // 无论如何，最后要去解锁
             redisDistributedLock.unLock(lockKey, lockValue);
             jedis.close();
         }

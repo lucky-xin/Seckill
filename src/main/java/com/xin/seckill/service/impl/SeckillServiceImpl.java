@@ -71,6 +71,10 @@ public class SeckillServiceImpl implements SeckillService {
 
         Seckill seckill = getById(seckillId);
 
+        if (null == seckill) {
+            return null;
+        }
+
         //若是秒杀未开启
         Date startTime = seckill.getStartTime();
         Date endTime = seckill.getEndTime();
