@@ -63,7 +63,7 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Seckill getById(long seckillId) {
-        return redisDao.getOrPutSeckill(seckillId, id -> seckillDao.queryById(id));
+        return redisDao.getSeckill(seckillId, id -> seckillDao.queryById(id));
     }
 
     @Override

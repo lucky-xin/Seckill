@@ -85,7 +85,7 @@ public class RedisDao {
      * @param getDataFromDb 从数据库获取的方法
      * @return 返回商品信息
      */
-    public Seckill getOrPutSeckill(long seckillId, Function<Long, Seckill> getDataFromDb) {
+    public Seckill getSeckill(long seckillId, Function<Long, Seckill> getDataFromDb) {
 
         String lockKey = "seckill:locks:getSeckill:" + seckillId;
         String lockValue = null;
