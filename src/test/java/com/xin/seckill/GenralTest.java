@@ -64,4 +64,12 @@ public class GenralTest {
         }
         return null;
     }
+
+    @Test
+    public void test3() {
+        int n = 9;
+        int i = 6;
+        n = n++ % --i;
+        System.out.println(n);
+    }
 }

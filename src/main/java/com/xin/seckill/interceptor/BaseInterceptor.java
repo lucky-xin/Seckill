@@ -2,7 +2,6 @@ package com.xin.seckill.interceptor;
 
 import com.xin.utils.log.LogFactory;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018-08-11 00:02
  * @Copyright (C)2018 , Luchaoxin
  */
-@Component
 public class BaseInterceptor implements HandlerInterceptor {
 
     private Logger logger = LogFactory.getLogger("BaseInterceptor");

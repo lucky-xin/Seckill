@@ -1,12 +1,13 @@
 package com.xin.seckill.configuration;
 
 import com.xin.seckill.interceptor.BaseInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xin.seckill.interceptor.TokenInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -25,16 +26,21 @@ public class CustomWebMvcConfigurer implements WebMvcConfigurer {
         registry.addResourceHandler("/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
     }
 
-    @Autowired
-    private BaseInterceptor baseInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(baseInterceptor).addPathPatterns("/**").excludePathPatterns("/static/**");
+//        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new BaseInterceptor()).addPathPatterns("/**");
     }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new DateConverterConfig());
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/app/login").setViewName("login");
     }
 }

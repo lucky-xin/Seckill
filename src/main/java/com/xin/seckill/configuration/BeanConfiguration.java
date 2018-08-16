@@ -7,10 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -28,12 +29,10 @@ import java.util.Properties;
  */
 @Configuration
 @ImportResource(locations = "classpath:spring/spring-dao.xml")
+@PropertySource(value = "classpath:config/druid.properties")
 public class BeanConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(BeanConfiguration.class);
-
-    @Autowired
-    private Environment env;
 
     @Autowired
     private RequestMappingHandlerAdapter handlerAdapter;
@@ -51,11 +50,9 @@ public class BeanConfiguration {
     }
 
     @Bean(name = "dataSource")
-    public DataSource getDataSource() {
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource druidDataSource() {
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl(env.getProperty("spring.datasource.url"));
-        dataSource.setUsername(env.getProperty("spring.datasource.username"));
-        dataSource.setPassword(env.getProperty("spring.datasource.password"));
         return dataSource;
     }
 

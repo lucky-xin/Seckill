@@ -8,8 +8,6 @@ import com.xin.seckill.dao.UserDao;
 import com.xin.seckill.enums.Sex;
 import com.xin.seckill.pojo.User;
 import com.xin.seckill.pojo.UserQueryVo;
-import com.xin.seckill.service.AbstractPagingQuery;
-import com.xin.seckill.service.PagingQuery;
 import com.xin.utils.StringUtil;
 import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;

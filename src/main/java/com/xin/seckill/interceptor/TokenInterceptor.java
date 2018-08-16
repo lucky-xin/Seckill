@@ -19,8 +19,7 @@ import java.util.UUID;
 public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
@@ -41,10 +40,9 @@ public class TokenInterceptor implements HandlerInterceptor {
                     request.getSession(false).removeAttribute("token");
                 }
             }
-            return true;
-        } else {
-            return preHandle(request, response, handler);
         }
+
+        return true;
     }
 
     private boolean isRepeatSubmit(HttpServletRequest request) {
@@ -55,13 +53,13 @@ public class TokenInterceptor implements HandlerInterceptor {
             return true;
         }
         //2、如果用户提交的表单数据中没有token，则用户是重复提交了表单
-        String clinetToken = request.getParameter("token");
-        if (clinetToken == null) {
+        String cliientToken = request.getParameter("token");
+        if (cliientToken == null) {
             return true;
         }
 
         //3、存储在Session中的Token(令牌)与表单提交的Token(令牌)不同，则用户是重复提交了表单
-        if (!serverToken.equals(clinetToken)) {
+        if (!serverToken.equals(cliientToken)) {
             return true;
         }
         return false;

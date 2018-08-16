@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
  * @date 2018-08-12 17:54
  * @Copyright (C)2018 , Luchaoxin
  */
-public class LoginInterceptor extends  BaseInterceptor{
+public class LoginInterceptor extends BaseInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -22,7 +22,7 @@ public class LoginInterceptor extends  BaseInterceptor{
         String url = request.getRequestURI();
         // 判断url是否是公开 地址（实际使用时将公开 地址配置配置文件中）
         // 这里公开地址是登陆提交的地址
-        if (url.indexOf("app")>0 || url.indexOf("verify")>0||url.indexOf("download") > 0) {
+        if (url.indexOf("app") > 0 || url.indexOf("verify") > 0 || url.indexOf("download") > 0 || url.indexOf("login") > 0) {
             // 如果进行登陆提交，放行
             return true;
         }
@@ -38,11 +38,8 @@ public class LoginInterceptor extends  BaseInterceptor{
         }
 
         // 执行这里表示用户身份需要认证，跳转登陆页面
-        request.getRequestDispatcher("/pages/login.ftl").forward(request, response);
+        request.getRequestDispatcher("/pages/login/login.ftl").forward(request, response);
 
-        // return false表示拦截，不向下执行
-        // return true表示放行
-//        return false;
-         return true;
+        return false;
     }
 }

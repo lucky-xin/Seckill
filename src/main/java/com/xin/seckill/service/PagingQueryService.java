@@ -11,11 +11,16 @@ import java.util.List;
  * @date 2018-08-12 16:45
  * @Copyright (C)2018 , Luchaoxin
  */
-public interface PagingQuery<T> {
+public interface PagingQueryService<T> {
 
-    List<T> queryData(int offset, int limit) throws Exception;
+    default List<T> pagingQuery(int offset, int limit) throws Exception {
+        return doPagingQuery(getRowBounds(offset, limit));
+    }
 
     default RowBounds getRowBounds(int offset, int limit) {
         return new RowBounds(offset, limit);
     }
+
+    List<T> doPagingQuery(RowBounds rowBounds) throws Exception;
+
 }

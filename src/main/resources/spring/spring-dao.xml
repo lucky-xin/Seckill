@@ -16,7 +16,7 @@
 
     <!--redisDao-->
     <bean id="redisDao" class="com.xin.seckill.dao.RedisDao">
-        <constructor-arg index="0" value="192.168.50.130"/>
+        <constructor-arg index="0" value="192.168.50.131"/>
         <constructor-arg index="1" value="6379"/>
         <constructor-arg index="2" value="foobared"/>
     </bean>

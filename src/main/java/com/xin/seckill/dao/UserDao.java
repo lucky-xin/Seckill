@@ -108,4 +108,8 @@ public interface UserDao {
     @ResultMap("sexTypeHandler")
     List<User> pagingQueryUserList(RowBounds rowBounds);
 
+    @Select("select id,name,password,email,birth,address,sex from user_info where password=#{password} and name=#{name}")
+    @ResultMap("sexTypeHandler")
+    int findUserByNameAndPassword(User user);
+
 }
