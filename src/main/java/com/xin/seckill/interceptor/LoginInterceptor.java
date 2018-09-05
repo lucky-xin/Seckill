@@ -38,8 +38,8 @@ public class LoginInterceptor extends BaseInterceptor {
         }
 
         // 执行这里表示用户身份需要认证，跳转登陆页面
-        request.getRequestDispatcher("/pages/login/login.ftl").forward(request, response);
+//        request.getRequestDispatcher("/pages/login/login.ftl").forward(request, response);
 
-        return false;
+        return true;
     }
 }

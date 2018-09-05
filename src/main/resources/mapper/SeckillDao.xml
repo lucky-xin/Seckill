@@ -26,9 +26,6 @@
 
     <select id="queryById" resultMap="seckillResult" parameterType="long">
         SELECT name,number,seckill_id,create_time,start_time,end_time
---         DATE_FORMAT(start_time,'%Y-%c-%d %H:%i:%S') start_time,
---         DATE_FORMAT(create_time,'%Y-%c-%d %H:%i:%S') create_time,
---         DATE_FORMAT(end_time,'%Y-%c-%d %H:%i:%S') end_time
         FROM seckill
         WHERE seckill_id=#{seckillId}
     </select>

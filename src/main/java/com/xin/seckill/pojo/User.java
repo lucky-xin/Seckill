@@ -1,11 +1,8 @@
 package com.xin.seckill.pojo;
 
 import com.xin.seckill.enums.Sex;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +13,7 @@ import java.util.List;
  * @date 2018-08-11 20:48
  * @Copyright (C)2018 , Luchaoxin
  */
-public class User implements UserDetails,Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -102,40 +99,39 @@ public class User implements UserDetails,Serializable {
         this.image = image;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return null;
+//    }
 
-    @Override
     public String getPassword() {
         return password;
     }
-
-    @Override
-    public String getUsername() {
-        return name;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
+//
+//    @Override
+//    public String getUsername() {
+//        return name;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return false;
+//    }
 
     public void setPassword(String password) {
         this.password = password;
