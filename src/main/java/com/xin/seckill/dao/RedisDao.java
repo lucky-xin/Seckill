@@ -1,5 +1,6 @@
 package com.xin.seckill.dao;
 
+import com.alibaba.fastjson.JSON;
 import com.xin.seckill.pojo.Seckill;
 import com.xin.utils.StringUtil;
 import com.xin.utils.log.LogFactory;
@@ -32,8 +33,6 @@ public class RedisDao {
 
     private String password;
 
-    private RuntimeSchema<Seckill> schema = RuntimeSchema.createFrom(Seckill.class);
-
     public RedisDao(String ip, int port, String password) {
         this.ip = ip;
         this.password = password;
@@ -62,9 +61,9 @@ public class RedisDao {
             byte[] bytes = jedis.get(key.getBytes());
             //缓存重获取到
             if (bytes != null) {
-                Seckill seckill = schema.newMessage();
-                ProtostuffIOUtil.mergeFrom(bytes, seckill, schema);
-                //seckill被反序列化
+
+                String json = new String(bytes);
+                Seckill seckill = JSON.parseObject(json,Seckill.class);
                 return seckill;
             }
         } catch (Exception e) {
@@ -129,14 +128,13 @@ public class RedisDao {
     public String putSeckill(Seckill seckill, Jedis jedis) {
         boolean isNewJedis = null == jedis;
         jedis = isNewJedis ? getJedis() : jedis;
-        boolean hasJedis = jedis != null;
         try {
             String key = getSeckillRedisKey(seckill.getSeckillId());
-            byte[] bytes = ProtostuffIOUtil.toByteArray(seckill, schema,
-                    LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
+
+            String json = JSON.toJSONString(seckill);
             //超时缓存，1小时
             int timeout = 60;
-            String result = jedis.setex(key.getBytes(), timeout, bytes);
+            String result = jedis.setex(key.getBytes(), timeout, json.getBytes());
             return result;
         } catch (Exception e) {
             redisLog.error("Redis保存Seckill发生异常", e);

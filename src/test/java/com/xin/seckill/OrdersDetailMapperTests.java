@@ -45,16 +45,14 @@ public class OrdersDetailMapperTests {
 
     @Test
     public void testAddOrders() throws Exception {
-        int count = 20000;
+        int count = 200;
         Orders orders = null;
-//        for (int i = 0; i < count; i++) {
-//            orders = new Orders(i + 30, i, "2", "剁手", "广州", new Date());
-//            int result = orderDetailDao.insertOrder(orders);
-//            System.out.println(result);
-//        }
-        orders = new Orders(22222, 1, null, null, null, new Date());
-        orderDetailDao.insertOrder(orders);
-
+        for (int i = 0; i < count; i++) {
+            orders = new Orders(i + 30, i, "2", "剁手", "广州", new Date());
+            int result = orderDetailDao.insertOrder(orders);
+            System.out.println(result);
+        }
+//        orders = new Orders(22222, 1, null, null, null, new Date());
     }
 
 

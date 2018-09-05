@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.50.130:3306/learn_db?serverTimezone=GMT&generateSimpleParameterMetadata=true&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://192.168.10.24:3306/learn_db?serverTimezone=GMT&generateSimpleParameterMetadata=true&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
-    password: MySql2018*
+    password: Data*2018*
   thymeleaf:
     prefix: classpath:/templates/
   mvc.static-path-pattern: /static/**

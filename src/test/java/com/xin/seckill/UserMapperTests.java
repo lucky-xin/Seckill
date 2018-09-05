@@ -88,7 +88,7 @@ public class UserMapperTests {
 
     @Test
     public void testFindUserById() throws Exception {
-        User user = userDao.findUserById(1);
+        User user = userDao.findUserById(5);
         //User [id=42, name=Ivan, password=123, email=1314@qq.com, sex=男, birth=Thu Jan 01 00:00:00 CST 1970, address=长沙]
         System.out.println(user);
     }

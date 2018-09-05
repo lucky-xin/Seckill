@@ -35,7 +35,7 @@ public class ItemsMapperTests {
 
     @Test
     public void insertTest() {
-        int count = 10;
+        int count = 20;
         Items items = null;
         for (int i = 0; i < count; i++) {
             String name = StringUtil.getRandomString(5);
