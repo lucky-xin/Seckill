@@ -1,9 +1,9 @@
 package com.xin.seckill;
 
+import biz.datainsights.utils.StringUtil;
 import com.github.pagehelper.PageHelper;
 import com.xin.seckill.dao.ItemsDao;
 import com.xin.seckill.pojo.Items;
-import com.xin.utils.StringUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;

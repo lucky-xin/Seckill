@@ -6,6 +6,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
@@ -27,8 +28,11 @@ public class TokenInterceptor implements HandlerInterceptor {
 
             if (annotation != null) {
                 boolean needSaveSession = annotation.save();
+                HttpSession session = request.getSession(false);
                 if (needSaveSession) {
-                    request.getSession(false).setAttribute("token", UUID.randomUUID().toString());
+                    if (null != session) {
+                        session.setAttribute("token", UUID.randomUUID().toString());
+                    }
                 }
 
                 boolean needRemoveSession = annotation.remove();
@@ -37,7 +41,9 @@ public class TokenInterceptor implements HandlerInterceptor {
                     if (isRepeatSubmit(request)) {
                         return false;
                     }
-                    request.getSession(false).removeAttribute("token");
+                    if (session != null) {
+                        session.removeAttribute("token");
+                    }
                 }
             }
         }
@@ -47,19 +53,26 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private boolean isRepeatSubmit(HttpServletRequest request) {
         //取出存储在Session中的token
-        String serverToken = (String) request.getSession(false).getAttribute("token");
+
+        HttpSession session = request.getSession(false);
+
+        if (null == session) {
+            return false;
+        }
+
+        String serverToken = (String) session.getAttribute("token");
         //1、如果当前用户的Session中不存在Token(令牌)，则用户是重复提交了表单
         if (serverToken == null) {
             return true;
         }
         //2、如果用户提交的表单数据中没有token，则用户是重复提交了表单
-        String cliientToken = request.getParameter("token");
-        if (cliientToken == null) {
+        String clientToken = request.getParameter("token");
+        if (clientToken == null) {
             return true;
         }
 
         //3、存储在Session中的Token(令牌)与表单提交的Token(令牌)不同，则用户是重复提交了表单
-        if (!serverToken.equals(cliientToken)) {
+        if (!serverToken.equals(clientToken)) {
             return true;
         }
         return false;

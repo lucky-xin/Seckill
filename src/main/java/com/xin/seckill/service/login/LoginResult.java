@@ -1,6 +1,6 @@
 package com.xin.seckill.service.login;
 
-/*
+/**
  * @author Luchaoxin
  * @version V1.0
  * @Description: 登录结果类型
@@ -8,7 +8,9 @@ package com.xin.seckill.service.login;
  * @Copyright (C)2018 , Luchaoxin
  */
 public enum LoginResult {
-
+    /**
+     * 登录成功
+     */
     SUCCESS(1, "登录成功"),
     NAME_OR_PASSWORD_ERROR(-1, "用户名或者密码错误"),
     DECODE_ERROR(-2, "解密出现错误"),

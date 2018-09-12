@@ -15,12 +15,8 @@ public class VerifyController {
     // 生成校验码
     @Token(save = true)//生成Token
     @RequestMapping("/check_code")
-    public void generateCheckCode(HttpServletRequest request, HttpServletResponse response) {
-        try {
+    public void generateCheckCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
             new RandomCodeImgUtil().generatePicture(request, response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

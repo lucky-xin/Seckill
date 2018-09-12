@@ -1,11 +1,11 @@
 package com.xin.seckill.dao;
 
+import biz.datainsights.utils.CollectionUtil;
+import biz.datainsights.utils.StringUtil;
 import com.xin.seckill.mybatis.handlers.SexEnumTypeHandler;
 import com.xin.seckill.pojo.User;
 import com.xin.seckill.pojo.UserQueryVo;
 import com.xin.seckill.util.DynamicSQLUtil;
-import com.xin.utils.CollectionUtil;
-import com.xin.utils.StringUtil;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.session.RowBounds;
@@ -28,19 +28,10 @@ public interface UserDao {
             + "#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler})")
     int insertUser(User user) throws Exception;
 
-    //    @Insert(
-//            "<script>"
-//            + " insert into user_info(id,name,password,email,birth,address,sex) values "
-//            + " <foreach collection=\"users\" item=\"item\" index=\"index\"  separator=\",\">"
-//            + "  (#{item.id,jdbcType=INTEGER}, #{item.name}, #{item.password},#{item.email},"
-//            + "   #{item.birth},#{item.address},#{item.sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler})"
-//            + " </foreach>"
-//            + " </script>")
     int batchInsertUser(@Param("users") List<User> users) throws Exception;
 
     int batchDeleteUser(List<Integer> ids) throws Exception;
-
-
+    
     @SelectProvider(type = UserDaoProvider.class, method = "findUserList")
     @Results(id = "sexTypeHandler", value = @Result(property = "sex", column = "sex", typeHandler = SexEnumTypeHandler.class))
     List<User> findUserList(UserQueryVo queryVo) throws Exception;

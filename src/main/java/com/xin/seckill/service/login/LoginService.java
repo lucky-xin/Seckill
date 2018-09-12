@@ -1,9 +1,10 @@
 package com.xin.seckill.service.login;
 
+import biz.datainsights.utils.StringUtil;
 import com.xin.seckill.dao.UserDao;
 import com.xin.seckill.pojo.User;
 import com.xin.seckill.util.AesEncryptUtil;
-import com.xin.utils.StringUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;

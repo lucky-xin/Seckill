@@ -1,14 +1,11 @@
 package com.xin.seckill.dao;
 
+import biz.datainsights.utils.StringUtil;
+import biz.datainsights.utils.log.LogFactory;
+import biz.datainsights.utils.redis.RedisClient;
+import biz.datainsights.utils.redis.RedisDistributedLock;
 import com.alibaba.fastjson.JSON;
 import com.xin.seckill.pojo.Seckill;
-import com.xin.utils.StringUtil;
-import com.xin.utils.log.LogFactory;
-import com.xin.utils.redis.RedisClient;
-import com.xin.utils.redis.RedisDistributedLock;
-import io.protostuff.LinkedBuffer;
-import io.protostuff.ProtostuffIOUtil;
-import io.protostuff.runtime.RuntimeSchema;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 

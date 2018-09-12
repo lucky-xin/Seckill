@@ -8,12 +8,12 @@ package com.xin.seckill.controllers;
  * @Copyright (C)2018 , Luchaoxin
  */
 
+import biz.datainsights.utils.StringUtil;
 import com.xin.seckill.pojo.Token;
 import com.xin.seckill.pojo.User;
 import com.xin.seckill.service.login.LoginResult;
 import com.xin.seckill.service.login.LoginService;
 import com.xin.seckill.util.AesEncryptUtil;
-import com.xin.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -51,14 +51,16 @@ public class LoginController {
         return null;
     }
 
-    @GetMapping(value = "/login_page")
+    @GetMapping(value = "/login/init")
     public String loginPage(Model model, HttpServletRequest request) {
         String base64key = StringUtil.getRandomString(16);
         String base64iv = StringUtil.getRandomString(16);
+        String token = StringUtil.getUUID();
         request.getSession().setAttribute("encrypt_key", base64key);
         request.getSession().setAttribute("encrypt_iv", base64iv);
+        request.getSession().setAttribute("token", token);
 
-        model.addAttribute("token", "kljdkjsklj");
+        model.addAttribute("token", token);
         model.addAttribute("base64key", AesEncryptUtil.getJsBase64String(base64key));
         model.addAttribute("base64iv", AesEncryptUtil.getJsBase64String(base64iv));
         return "/pages/login/login";

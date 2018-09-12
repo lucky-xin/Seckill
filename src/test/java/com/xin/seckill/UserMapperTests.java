@@ -1,5 +1,6 @@
 package com.xin.seckill;
 
+import biz.datainsights.utils.StringUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -8,7 +9,6 @@ import com.xin.seckill.dao.UserDao;
 import com.xin.seckill.enums.Sex;
 import com.xin.seckill.pojo.User;
 import com.xin.seckill.pojo.UserQueryVo;
-import com.xin.utils.StringUtil;
 import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;

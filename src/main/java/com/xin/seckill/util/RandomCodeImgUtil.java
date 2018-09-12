@@ -8,24 +8,24 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 
-/*
+/**
  * @author Luchaoxin
  * @version V1.0
  * @Description:图片随机码
  * @date 2018-08-13 20:04
  * @Copyright (C)2018 , Luchaoxin
  */
-public class RandomCodeImgUtil {
+public class
+RandomCodeImgUtil {
 
     public static final int WIDTH = 120;
     public static final int HEIGHT = 25;
     private Color[] color = {Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GREEN,
             Color.MAGENTA, Color.RED};
-    private Color textColor;
 
     public void generatePicture(HttpServletRequest request, HttpServletResponse response) throws IOException {
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        textColor = color[new Random().nextInt(color.length)];
+        Color textColor = color[new Random().nextInt(color.length)];
         Graphics g = image.getGraphics();
         // 设置背景色
         setBackGround(g);
@@ -34,10 +34,10 @@ public class RandomCodeImgUtil {
         setBorder(g);
 
         // 画干扰线
-        drawRandomLine(g);
+        drawRandomLine(g, textColor);
 
         // 写随机数
-        String checkCode = drawRandomNum((Graphics2D) g);
+        String checkCode = drawRandomNum((Graphics2D) g, textColor);
         request.getSession().setAttribute("imageCheckCode", checkCode);
 
         response.setContentType("image/jpeg");
@@ -48,7 +48,7 @@ public class RandomCodeImgUtil {
         ImageIO.write(image, "jpg", response.getOutputStream());
     }
 
-    private String drawRandomNum(Graphics2D g) {
+    private String drawRandomNum(Graphics2D g, Color textColor) {
         g.setColor(textColor);
         g.setFont(new Font("宋体", Font.BOLD, 20));
         int x = 10;
@@ -66,7 +66,7 @@ public class RandomCodeImgUtil {
         return sb.toString();
     }
 
-    private void drawRandomLine(Graphics g) {
+    private void drawRandomLine(Graphics g, Color textColor) {
         g.setColor(textColor);
         for (int i = 0; i < 5; i++) {
             int x1 = new Random().nextInt(WIDTH - 4) + 2;

@@ -1,8 +1,8 @@
 package com.xin.seckill.util;
 
+import biz.datainsights.utils.StringUtil;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Lists;
-import com.xin.utils.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.List;

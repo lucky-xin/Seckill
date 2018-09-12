@@ -1,5 +1,8 @@
 package com.xin.seckill.service.impl;
 
+import biz.datainsights.utils.CollectionUtil;
+import biz.datainsights.utils.StringUtil;
+import biz.datainsights.utils.redis.RedisDistributedLock;
 import com.google.common.collect.Maps;
 import com.xin.seckill.dao.RedisDao;
 import com.xin.seckill.dao.SeckillDao;
@@ -11,9 +14,6 @@ import com.xin.seckill.exception.SeckillException;
 import com.xin.seckill.pojo.Seckill;
 import com.xin.seckill.pojo.SuccessKilled;
 import com.xin.seckill.service.SeckillService;
-import com.xin.utils.CollectionUtil;
-import com.xin.utils.StringUtil;
-import com.xin.utils.redis.RedisDistributedLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,8 +156,8 @@ public class SeckillServiceImpl implements SeckillService {
                     }
                 } while (System.currentTimeMillis() < endTime);
             }
-        } catch (InterruptedException e) {
-
+        } catch (Exception e) {
+            logger.error("释放锁异常", e);
         } finally {
             redisDistributedLock.unLock(lockKey, lockValue);
         }
