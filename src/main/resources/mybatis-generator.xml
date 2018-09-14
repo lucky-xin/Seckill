@@ -10,7 +10,7 @@
         </commentGenerator>
         <!--数据库链接地址账号密码-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.10.24:3306/learn_db?serverTimezone=GMT
+                        connectionURL="jdbc:mysql://192.168.80.131:3306/learn_db?serverTimezone=GMT
                         &amp;generateSimpleParameterMetadata=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false"
                         userId="root" password="Data*2018*">
         </jdbcConnection>

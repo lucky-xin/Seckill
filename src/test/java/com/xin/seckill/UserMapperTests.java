@@ -1,14 +1,15 @@
 package com.xin.seckill;
 
-import biz.datainsights.utils.StringUtil;
+
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.xin.seckill.dao.UserDao;
 import com.xin.seckill.enums.Sex;
-import com.xin.seckill.pojo.User;
+import com.xin.seckill.pojo.UserInfo;
 import com.xin.seckill.pojo.UserQueryVo;
+import com.xin.utils.StringUtil;
 import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
@@ -49,7 +50,8 @@ public class UserMapperTests {
         int count = 40;
         for (int i = 0; i < count; i++) {
             String randomString = StringUtil.getRandomString(10);
-            User user = new User(randomString + "@qq.com", "name" + i + randomString, Sex.MALE, new Date(), "长沙", randomString);
+            //Integer id, String name, String password, String email, Date birth, String imageId, String address, Sex sex
+            UserInfo user = new UserInfo(i, "name" + i + randomString, randomString, randomString + "@qq.com", new Date(), randomString, "长沙", Sex.MALE);
             user.setId(5 + i);
             userDao.insertUser(user);
         }
@@ -63,10 +65,10 @@ public class UserMapperTests {
     @Test
     public void batchInsertUserTest() throws Exception {
         int count = 10;
-        List<User> users = Lists.newArrayList();
+        List<UserInfo> users = Lists.newArrayList();
         for (int i = 0; i < count; i++) {
             String randomString = StringUtil.getRandomString(10);
-            User user = new User(randomString + "@qq.com", "name" + i + randomString, Sex.MALE, new Date(), "长沙", randomString);
+            UserInfo user = new UserInfo(i, "name" + i + randomString, randomString, randomString + "@qq.com", new Date(), randomString, "长沙", Sex.MALE);
             user.setId(33333 + i);
             users.add(user);
         }
@@ -88,7 +90,7 @@ public class UserMapperTests {
 
     @Test
     public void testFindUserById() throws Exception {
-        User user = userDao.findUserById(5);
+        UserInfo user = userDao.findUserById(5);
         //User [id=42, name=Ivan, password=123, email=1314@qq.com, sex=男, birth=Thu Jan 01 00:00:00 CST 1970, address=长沙]
         System.out.println(user);
     }
@@ -98,22 +100,22 @@ public class UserMapperTests {
         Map<String, Object> params = Maps.newHashMap();
         params.put("id", 100);
         params.put("name", "name");
-        List<User> user = userDao.findUserByHashMap(params);
+        List<UserInfo> user = userDao.findUserByHashMap(params);
         System.out.println(user);
     }
 
     @Test
     public void testFindUserByNames() throws Exception {
-        List<User> user = userDao.findUserByName("name");
+        List<UserInfo> user = userDao.findUserByName("name");
         System.out.println(user.get(0));
     }
 
     @Test
     public void testPageQuery() throws Exception {
         Page page = pageHelper.startPage(1, 10);
-        List<User> users = userDao.findUserByName("name");
-        PageInfo<User> pageInfo = new PageInfo<>(users);
-        List<User> result = pageInfo.getList();
+        List<UserInfo> users = userDao.findUserByName("name");
+        PageInfo<UserInfo> pageInfo = new PageInfo<>(users);
+        List<UserInfo> result = pageInfo.getList();
         System.out.println(result.size());
     }
 
@@ -121,7 +123,7 @@ public class UserMapperTests {
     @Test
     public void testFindUserList() throws Exception {
         UserQueryVo userQueryVo = new UserQueryVo();
-        User custom = new User();
+        UserInfo custom = new UserInfo();
         //foreach测试
         List<Integer> ids = new ArrayList<Integer>();
         ids.add(91);
@@ -133,7 +135,7 @@ public class UserMapperTests {
         custom.setName("name");
         userQueryVo.setUserCustom(custom);
         userQueryVo.setIds(ids);
-        List<User> customs = userDao.findUserList(userQueryVo);
+        List<UserInfo> customs = userDao.findUserList(userQueryVo);
         System.out.println(customs);
     }
 
@@ -141,7 +143,7 @@ public class UserMapperTests {
     @Test
     public void testFindUserListByMap() throws Exception {
         UserQueryVo userQueryVo = new UserQueryVo();
-        User custom = new User();
+        UserInfo custom = new UserInfo();
         //foreach测试
         List<Integer> ids = new ArrayList<Integer>();
         ids.add(91);
@@ -153,7 +155,7 @@ public class UserMapperTests {
         custom.setName("name");
         userQueryVo.setUserCustom(custom);
         userQueryVo.setIds(ids);
-        List<User> customs = userDao.findUserByMap(userQueryVo);
+        List<UserInfo> customs = userDao.findUserByMap(userQueryVo);
         System.out.println(customs);
     }
 
@@ -165,14 +167,14 @@ public class UserMapperTests {
         map.put("username", "泡泡");
 
         //传递HashMap对象查询用户列表
-        List<User> list = userDao.findUserByHashMap(map);
+        List<UserInfo> list = userDao.findUserByHashMap(map);
         System.out.println(list);
     }
 
     @Test
     public void testFindUserCount() throws Exception {
         UserQueryVo userQueryVo = new UserQueryVo();
-        User custom = new User();
+        UserInfo custom = new UserInfo();
         custom.setSex(Sex.MALE);
         custom.setName("name");
         userQueryVo.setUserCustom(custom);
@@ -182,8 +184,7 @@ public class UserMapperTests {
 
     @Test
     public void testUpdateUser() throws Exception {
-        User user = new User("范冰冰@qq.com", "范冰冰", Sex.FEMALE,
-                new java.sql.Date(System.currentTimeMillis()), "北京", "123456789");
+        UserInfo user = new UserInfo();
         user.setId(48);
         int result = userDao.updateUser(user);
         System.out.println(result);
@@ -250,13 +251,13 @@ public class UserMapperTests {
         int offset = 0;//开始位置
         int limit = 25;//取出的数据条数
         RowBounds rowBounds = new RowBounds(offset, limit);
-        List<User> users = userDao.pagingQueryUserList(rowBounds);
+        List<UserInfo> users = userDao.pagingQueryUserList(rowBounds);
         System.out.println(users.size());
-        sqlSession.select("", new ResultHandler<User>() {
+        sqlSession.select("", new ResultHandler<UserInfo>() {
 
             @Override
-            public void handleResult(ResultContext<? extends User> resultContext) {
-                User user = resultContext.getResultObject();
+            public void handleResult(ResultContext<? extends UserInfo> resultContext) {
+                UserInfo user = resultContext.getResultObject();
             }
         });
 

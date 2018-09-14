@@ -15,7 +15,7 @@
         <result column="address" property="address" />
 
         <!-- association:用于映射关联查询的对个对象的信息 property:将要关联查询的用户信息映射到Orders中哪个类属性 -->
-        <association property="user" javaType="com.xin.seckill.pojo.User">
+        <association property="user" javaType="com.xin.seckill.pojo.UserInfo">
             <id column="user_id" property="id" />
             <result column="name" property="name" />
             <result column="address" property="address" />
@@ -34,7 +34,7 @@
         </collection>
     </resultMap>
 
-    <resultMap type="com.xin.seckill.pojo.User" id="UserAndItemsResultMap">
+    <resultMap type="com.xin.seckill.pojo.UserInfo" id="UserAndItemsResultMap">
         <!--用户信息 -->
         <id column="user_id" property="id" />
         <result column="name" property="name" />

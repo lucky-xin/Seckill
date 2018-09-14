@@ -27,7 +27,7 @@
         </if>
     </sql>
 
-    <resultMap type="com.xin.seckill.pojo.User" id="userResultMap">
+    <resultMap type="com.xin.seckill.pojo.UserInfo" id="userResultMap">
         <id column="id_" property="id"/>
         <result column="username_" property="name"/>
         <result column="birthday_" property="birth"/>

@@ -2,7 +2,7 @@ package com.xin.seckill.dao;
 
 import com.xin.seckill.pojo.Orders;
 import com.xin.seckill.pojo.OrdersCustom;
-import com.xin.seckill.pojo.User;
+import com.xin.seckill.pojo.UserInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public interface OrdersCustomDao {
      * @return
      * @throws Exception
      */
-    List<User> findUserAndItemsResultMap() throws Exception;
+    List<UserInfo> findUserAndItemsResultMap() throws Exception;
 
     /**
      * 延时加载

@@ -138,19 +138,6 @@
             <artifactId>kafka-clients</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-runtime -->
-        <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-runtime</artifactId>
-            <version>1.6.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.protostuff/protostuff-core -->
-        <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-core</artifactId>
-            <version>1.6.0</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <dependency>
@@ -173,18 +160,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -206,8 +181,8 @@
         </dependency>
 
         <dependency>
-            <groupId>biz.datainsights</groupId>
-            <artifactId>utils</artifactId>
+            <groupId>Utils</groupId>
+            <artifactId>com.xin.utils</artifactId>
             <version>1.0.1</version>
         </dependency>
     </dependencies>
@@ -221,6 +196,7 @@
                     <fork>true</fork>
                 </configuration>
             </plugin>
+
             <!-- mybatis generator 自动生成代码插件 -->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
@@ -241,6 +217,8 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+
 
         </plugins>
     </build>

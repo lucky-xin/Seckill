@@ -13,13 +13,13 @@ public class UserQueryVo {
 
     private List<Integer> ids;
 
-    private User userCustom;
+    private UserInfo userCustom;
 
-    public User getUserCustom() {
+    public UserInfo getUserCustom() {
         return userCustom;
     }
 
-    public void setUserCustom(User userCustom) {
+    public void setUserCustom(UserInfo userCustom) {
         this.userCustom = userCustom;
     }
 

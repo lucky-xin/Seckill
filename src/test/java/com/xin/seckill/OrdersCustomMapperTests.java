@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.xin.seckill.dao.OrdersCustomDao;
 import com.xin.seckill.pojo.Orders;
 import com.xin.seckill.pojo.OrdersCustom;
-import com.xin.seckill.pojo.User;
+import com.xin.seckill.pojo.UserInfo;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +43,7 @@ public class OrdersCustomMapperTests {
     @Test
     public void testFindOrdersUserResultMap() throws Exception {
         List<Orders> customs = ordersCustomDao.findOrdersUserResultMap();
-        User user = customs.get(0).getUser();
+        UserInfo user = customs.get(0).getUser();
         System.out.println(user);
     }
 
@@ -55,7 +55,7 @@ public class OrdersCustomMapperTests {
 
     @Test
     public void testFindUserAndItemsResultMap() throws Exception {
-        List<User> customs = ordersCustomDao.findUserAndItemsResultMap();
+        List<UserInfo> customs = ordersCustomDao.findUserAndItemsResultMap();
         System.out.println(customs);
     }
 
@@ -66,7 +66,7 @@ public class OrdersCustomMapperTests {
         System.out.println(list.size());
         for (Orders orders : list) {
             // 执行select *from user_tbl where id=?
-            User user = orders.getUser();// 延时加载
+            UserInfo user = orders.getUser();// 延时加载
             System.out.println(user);
         }
     }

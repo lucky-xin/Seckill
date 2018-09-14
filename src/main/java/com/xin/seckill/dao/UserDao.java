@@ -1,11 +1,12 @@
 package com.xin.seckill.dao;
 
-import biz.datainsights.utils.CollectionUtil;
-import biz.datainsights.utils.StringUtil;
+
 import com.xin.seckill.mybatis.handlers.SexEnumTypeHandler;
-import com.xin.seckill.pojo.User;
+import com.xin.seckill.pojo.UserInfo;
 import com.xin.seckill.pojo.UserQueryVo;
 import com.xin.seckill.util.DynamicSQLUtil;
+import com.xin.utils.CollectionUtil;
+import com.xin.utils.StringUtil;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.session.RowBounds;
@@ -23,18 +24,18 @@ import java.util.Map;
 @Mapper
 public interface UserDao {
 
-    @Insert("insert into user_info(id,name,password,email,birth,address,sex)values"
+    @Insert("insert into user_info(id,name,password,email,birth,address,sex,image_id)values"
             + "(#{id},#{name},#{password},#{email},#{birth,jdbcType=TIMESTAMP},#{address},"
-            + "#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler})")
-    int insertUser(User user) throws Exception;
+            + "#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler},#{imageId})")
+    int insertUser(UserInfo user) throws Exception;
 
-    int batchInsertUser(@Param("users") List<User> users) throws Exception;
+    int batchInsertUser(@Param("users") List<UserInfo> userInfos) throws Exception;
 
     int batchDeleteUser(List<Integer> ids) throws Exception;
     
     @SelectProvider(type = UserDaoProvider.class, method = "findUserList")
     @Results(id = "sexTypeHandler", value = @Result(property = "sex", column = "sex", typeHandler = SexEnumTypeHandler.class))
-    List<User> findUserList(UserQueryVo queryVo) throws Exception;
+    List<UserInfo> findUserList(UserQueryVo queryVo) throws Exception;
 
     class UserDaoProvider {
         public String findUserList(UserQueryVo queryVo) {
@@ -68,39 +69,39 @@ public interface UserDao {
             @Result(column = "username_", property = "name"),
             @Result(column = "birthday_", property = "birth")}
     )
-    User findUserByResultMap(@Param("value") int id) throws Exception;
+    UserInfo findUserByResultMap(@Param("value") int id) throws Exception;
 
     @Select("select id,name,password,email,birth,address,sex from user_info where id=#{id}")
     @ResultMap("sexTypeHandler")
-    User findUserById(@Param("id") int id) throws Exception;
+    UserInfo findUserById(@Param("id") int id) throws Exception;
 
     @Select("select id,name,password,email,birth,address,sex from user_info where name like '%${name}%'")
     @ResultMap("sexTypeHandler")
-    List<User> findUserByName(@Param("name") String name) throws Exception;
+    List<UserInfo> findUserByName(@Param("name") String name) throws Exception;
 
     @Delete("delete from user_info where id=#{id}")
     int deleteUser(@Param("id") int id) throws Exception;
 
     @Update("update user_info set sex=#{sex,typeHandler=com.xin.seckill.mybatis.handlers.SexValueTypeHandler},name=#{name},"
             + "birth=#{birth,jdbcType=TIMESTAMP},address=#{address},password=#{password} ,email=#{email} where id=#{id}")
-    int updateUser(User user) throws Exception;
+    int updateUser(UserInfo user) throws Exception;
 
     @Select("select id,name,password,email,birth,address,sex from user_info where id=#{id} and name like '%${username}%'")
     @ResultMap("sexTypeHandler")
-    List<User> findUserByHashMap(Map<String, Object> map) throws Exception;
+    List<UserInfo> findUserByHashMap(Map<String, Object> map) throws Exception;
 
 
-    List<User> findUserByMap(UserQueryVo userQueryVo) throws Exception;
+    List<UserInfo> findUserByMap(UserQueryVo userQueryVo) throws Exception;
 
     @Update("update user_info set sex = #{sex} where id/2=0")
     int updateSex(@Param("sex") int sex) throws Exception;
 
     @Select("select id,name,password,email,birth,address,sex from user_info")
     @ResultMap("sexTypeHandler")
-    List<User> pagingQueryUserList(RowBounds rowBounds);
+    List<UserInfo> pagingQueryUserList(RowBounds rowBounds);
 
     @Select("select id,name,password,email,birth,address,sex from user_info where password=#{password} and name=#{name}")
     @ResultMap("sexTypeHandler")
-    int findUserByNameAndPassword(User user);
+    int findUserByNameAndPassword(UserInfo user);
 
 }

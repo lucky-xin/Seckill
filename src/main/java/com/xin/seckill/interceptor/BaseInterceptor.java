@@ -1,7 +1,8 @@
 package com.xin.seckill.interceptor;
 
 
-import biz.datainsights.utils.log.LogFactory;
+
+import com.xin.utils.log.LogFactory;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 

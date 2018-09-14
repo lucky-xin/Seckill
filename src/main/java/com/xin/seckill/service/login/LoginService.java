@@ -1,13 +1,13 @@
 package com.xin.seckill.service.login;
 
-import biz.datainsights.utils.StringUtil;
+
 import com.xin.seckill.dao.UserDao;
-import com.xin.seckill.pojo.User;
+import com.xin.seckill.pojo.UserInfo;
 import com.xin.seckill.util.AesEncryptUtil;
 
+import com.xin.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,7 +25,7 @@ public class LoginService {
     @Autowired
     private UserDao userDao;
 
-    public LoginResult login(User user, HttpServletRequest request) {
+    public LoginResult login(UserInfo user, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         String encryptKey = StringUtil.toString(session.getAttribute("encrypt_key"));

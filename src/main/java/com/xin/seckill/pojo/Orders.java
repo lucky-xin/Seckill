@@ -24,7 +24,7 @@ public class Orders {
 
     private Date createTime;
 
-    private User user;
+    private UserInfo user;
 
     private List<OrderDetail> orderdetails;
 
@@ -57,11 +57,11 @@ public class Orders {
         this.address = address;
     }
 
-    public User getUser() {
+    public UserInfo getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserInfo user) {
         this.user = user;
     }
 

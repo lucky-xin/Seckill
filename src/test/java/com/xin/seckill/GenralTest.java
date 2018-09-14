@@ -2,7 +2,7 @@ package com.xin.seckill;
 
 import com.google.common.base.CaseFormat;
 import com.xin.seckill.pojo.Items;
-import com.xin.seckill.pojo.User;
+import com.xin.seckill.pojo.UserInfo;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -32,7 +32,7 @@ public class GenralTest {
 //        System.out.println(sql.toString());
 
 //        System.out.println(DynamicSQLUtil.getUpdateStmt(Items.class, "id"));
-        User user = new User();
+        UserInfo user = new UserInfo();
         user.setName("jhjkh");
 
         String fieldName = "name";

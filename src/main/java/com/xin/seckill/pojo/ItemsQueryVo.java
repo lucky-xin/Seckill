@@ -12,15 +12,15 @@ import java.util.List;
 public class ItemsQueryVo {
     private Items items;
 
-    private User user;
+    private UserInfo user;
 
     private List<Items> itemsList;
 
-    public User getUser() {
+    public UserInfo getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserInfo user) {
         this.user = user;
     }
 
